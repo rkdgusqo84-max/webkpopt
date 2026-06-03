@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NAMSAN TOWER — K-Contents 글로벌 플랫폼</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold: #C96442;            /* Terracotta Brand */
+  --gold-light: #D97757;      /* Coral Accent */
+  --purple: #B53333;          /* K-POP — warm crimson */
+  --blue: #3B82F6;            /* Media — focus blue */
+  --surface: #EAE7DC;         /* Parchment page bg */
+  --s1: #F0EDE6;              /* Lighter warm band */
+  --s2: #FAF9F4;              /* Ivory card surface */
+  --s3: #F3F0E9;              /* Muted ivory */
+  --border: rgba(20,20,19,0.10);     /* Border Cream */
+  --border-warm: rgba(201,100,66,0.25);
+  --text: #141413;            /* Anthropic Near Black */
+  --muted: #6E6B62;           /* Warm gray */
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.28;
+}
+.keep { word-break: keep-all; }
+
+.glass { background: rgba(255,255,255,0.55); border: 1px solid var(--border); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.glass-gold { background: rgba(201,100,66,0.06); border: 1px solid var(--border-warm); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+.card { background: var(--s2); border: 1px solid var(--border); box-shadow: 0 4px 24px rgba(0,0,0,0.05); border-radius: 20px; }
+
+.gold { color: var(--gold); }
+.gold-glow { box-shadow: 0 0 48px rgba(201,100,66,0.18); }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: #FBF9F4; font-weight: 700;
+  border-radius: 9999px; padding: 13px 26px 13px 16px; font-size: 14px;
+  letter-spacing: -0.01em; cursor: pointer; text-decoration: none; border: none;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.pill:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 40px rgba(201,100,66,0.3); }
+.pill:active { transform: scale(0.98); }
+.pill .ic { width: 30px; height: 30px; background: rgba(0,0,0,0.16); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pill-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(20,20,19,0.03); color: var(--text); font-weight: 600;
+  border-radius: 9999px; padding: 12px 22px; font-size: 14px;
+  border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s, background 0.25s;
+}
+.pill-ghost:hover { border-color: rgba(20,20,19,0.18); background: rgba(20,20,19,0.05); }
+
+.nav-bar {
+  background: rgba(237,234,224,0.82);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  border-radius: 9999px;
+}
+
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(20,20,19,0.04); border: 1px solid var(--border);
+  border-radius: 9999px; padding: 4px 12px; font-size: 11px; font-weight: 500;
+  color: var(--muted); letter-spacing: 0.03em; text-transform: uppercase;
+}
+.tag-gold { background: rgba(201,100,66,0.1); border: 1px solid var(--border-warm); color: var(--gold); }
+
+.rv { opacity: 0; transform: translateY(24px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+.rv.in { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; } .d4 { transition-delay: 0.4s; }
+
+@keyframes pulse-dot { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes cueBounce { 0%,100% { transform: translateY(0); opacity:0.7; } 50% { transform: translateY(7px); opacity:1; } }
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+.ticker-anim { animation: ticker 30s linear infinite; }
+
+.vline { width: 1px; background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent); align-self: stretch; }
+.grid-overlay { background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 72px 72px; }
+.stat-n { font-size: clamp(38px,5.5vw,68px); font-weight: 800; letter-spacing: -0.04em; line-height: 1; color: var(--gold); }
+
+.tcard { background: var(--s2); border: 1px solid var(--border); border-radius: 18px; padding: 26px; box-shadow: 0 4px 24px rgba(0,0,0,0.05); transition: border-color 0.3s, box-shadow 0.3s, transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+.tcard:hover { border-color: var(--border-warm); transform: translateY(-4px); }
+.avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #FBF9F4; flex-shrink: 0; }
+
+.inp { width: 100%; background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; font-size: 14px; color: var(--text); outline: none; font-family: inherit; transition: border-color 0.25s; }
+.inp:focus { border-color: #3898ec; box-shadow: 0 0 0 3px rgba(56,152,236,0.15); }
+.inp::placeholder { color: var(--muted); }
+
+/* ════ PROJECT GALLERY ════ */
+.masonry { column-count: 3; column-gap: 16px; }
+@media (max-width: 1024px){ .masonry { column-count: 2; } }
+@media (max-width: 640px){ .masonry { column-count: 1; } }
+.gitem { break-inside: avoid; position: relative; margin-bottom: 16px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.gitem img { width: 100%; height: auto; display: block; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.5s; filter: saturate(0.96); }
+.gitem:hover img { transform: scale(1.05); filter: saturate(1.08); }
+.gitem-ov { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background: linear-gradient(to top, rgba(8,8,9,0.9) 0%, rgba(8,8,9,0.15) 45%, transparent 72%); }
+.gitem-cat { display: inline-flex; align-items: center; align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 9999px; margin-bottom: 8px; }
+.gitem-title { font-size: 13.5px; font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1.4; }
+
+/* ════ HERO SCROLL-SCRUB ════ */
+.hero-wrap { position: relative; height: 320vh; }
+.hero-sticky { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; background: var(--surface); }
+.hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; filter: brightness(1.04) saturate(1.02) contrast(0.98); }
+.hero-grade {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to top, var(--surface) 0%, rgba(234,231,220,0.4) 20%, transparent 46%),
+    linear-gradient(to right, rgba(234,231,220,0.92) 0%, rgba(234,231,220,0.45) 34%, transparent 62%),
+    linear-gradient(to bottom, rgba(234,231,220,0.55) 0%, transparent 20%);
+}
+.hero-vignette { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 220px 60px rgba(60,50,38,0.12); }
+.hero-progress { position: absolute; right: clamp(16px,3vw,40px); top: 50%; transform: translateY(-50%); width: 2px; height: 120px; background: rgba(20,20,19,0.12); border-radius: 2px; overflow: hidden; z-index: 6; }
+.hero-progress span { position: absolute; left: 0; top: 0; width: 100%; height: 0%; background: var(--gold); border-radius: 2px; }
+@media (max-width: 768px) { .hero-progress { display: none; } }
+
+.hero-ui { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 clamp(20px,5vw,64px) clamp(40px,7vh,84px); pointer-events: none; }
+.hero-inner { width: 100%; max-width: 80rem; margin: 0 auto; }
+.hero-stage { position: relative; height: clamp(300px, 52vh, 440px); }
+.hero-phase { position: absolute; left: 0; bottom: 0; width: 100%; max-width: 760px; }
+.hero-phase .pill, .hero-phase .pill-ghost, .hero-phase a { pointer-events: auto; }
+.scroll-cue { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 0.25em; color: rgba(20,20,19,0.5); pointer-events: none; }
+.scroll-cue iconify-icon { animation: cueBounce 1.8s ease-in-out infinite; }
+
+.hero-loader { position: absolute; inset: 0; z-index: 20; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; transition: opacity 0.6s ease; }
+.hero-loader.hidden { opacity: 0; pointer-events: none; }
+.loader-bar { width: min(220px, 60vw); height: 2px; background: rgba(20,20,19,0.1); border-radius: 2px; overflow: hidden; }
+.loader-bar span { display: block; height: 100%; width: 0%; background: var(--gold); transition: width 0.2s ease; }
+
+@media (max-width: 768px) {
+  .hide-m { display: none !important; }
+  .nav-links { display: none; }
+  [class*="lg:col-span"] { grid-column: span 1 !important; }
+  .hero-wrap { height: 300vh; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="fixed top-5 left-0 right-0 z-50 flex justify-center px-4">
+  <div class="nav-bar flex items-center justify-between gap-6 px-5 py-3 w-full max-w-5xl">
+    <a href="#" class="flex items-center gap-2 shrink-0">
+      <span style="width:30px;height:30px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+        <iconify-icon icon="solar:tower-bold" style="color:#FBF9F4;font-size:16px;"></iconify-icon>
+      </span>
+      <span style="font-weight:800;font-size:14px;letter-spacing:-0.04em;">NAMSAN<span class="gold">.</span></span>
+    </a>
+    <div class="nav-links hidden md:flex items-center gap-7" style="font-size:13px;color:var(--muted);">
+      <a href="#namsan" class="hover:text-neutral-900 transition-colors">남산타워</a>
+      <a href="#kpop" class="hover:text-neutral-900 transition-colors">K-POP</a>
+      <a href="#media" class="hover:text-neutral-900 transition-colors">미디어 콘텐츠</a>
+      <a href="#project" class="hover:text-neutral-900 transition-colors">프로젝트</a>
+      <a href="#contact" class="hover:text-neutral-900 transition-colors">문의</a>
+    </div>
+    <a href="#contact" class="pill" style="padding:9px 20px 9px 12px;font-size:12px;">
+      <span class="ic" style="width:22px;height:22px;"><iconify-icon icon="solar:arrow-right-bold" style="font-size:11px;"></iconify-icon></span>
+      무료 상담
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ HERO — SCROLL SCRUB ═══ -->
+<section id="hero" class="hero-wrap">
+  <div class="hero-sticky">
+    <canvas id="seq" class="hero-canvas"></canvas>
+    <div class="hero-grade"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-progress"><span id="heroBar"></span></div>
+
+    <div class="hero-ui">
+      <div class="hero-inner">
+        <div class="hero-stage">
+          <!-- Phase A -->
+          <div class="hero-phase" id="phaseA">
+            <div class="flex flex-wrap gap-2 mb-7">
+              <span class="tag tag-gold"><span class="pulse-dot" style="width:5px;height:5px;background:var(--gold);border-radius:50%;display:inline-block;"></span>K-Contents Global Platform</span>
+            </div>
+            <h1 class="keep" style="font-size:clamp(40px,7vw,86px);font-weight:900;letter-spacing:-0.045em;line-height:1.04;">
+              랜드마크를<br/><span class="gold">글로벌 플랫폼</span>으로<br/>확장합니다
+            </h1>
+            <p class="keep" style="font-size:clamp(14px,1.7vw,17px);color:rgba(20,20,19,0.74);max-width:480px;margin-top:22px;line-height:1.7;">
+              남산서울타워를 거점으로 타워 조명·미디어파사드·K-POP 프로모션·미디어 콘텐츠 제작까지, 공간과 콘텐츠를 연결하는 통합 K-Contents 전문 기업입니다.
+            </p>
+            <div class="flex flex-wrap gap-4" style="margin-top:32px;">
+              <a href="#contact" class="pill"><span class="ic"><iconify-icon icon="solar:calendar-bold" style="font-size:15px;"></iconify-icon></span>프로젝트 상담</a>
+              <a href="#namsan" class="pill-ghost"><iconify-icon icon="solar:arrow-right-down-line-duotone" style="font-size:17px;"></iconify-icon>사업 보기</a>
+            </div>
+          </div>
+
+          <!-- Phase B -->
+          <div class="hero-phase" id="phaseB" style="opacity:0;">
+            <span class="tag tag-gold mb-6" style="display:inline-flex;">Since 2014 · Namsan, Seoul</span>
+            <h2 class="keep" style="font-size:clamp(36px,6vw,76px);font-weight:900;letter-spacing:-0.045em;line-height:1.05;">
+              도시를<br/><span class="gold">콘텐츠</span>로 만듭니다
+            </h2>
+            <div class="flex flex-wrap gap-2" style="margin-top:26px;">
+              <span class="glass" style="border-radius:9999px;padding:8px 16px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;"><iconify-icon icon="solar:tower-bold" class="gold"></iconify-icon>Namsan Tower</span>
+              <span class="glass" style="border-radius:9999px;padding:8px 16px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;"><iconify-icon icon="solar:music-note-bold" style="color:var(--purple);"></iconify-icon>K-POP</span>
+              <span class="glass" style="border-radius:9999px;padding:8px 16px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;"><iconify-icon icon="solar:videocamera-record-bold" style="color:var(--blue);"></iconify-icon>Media Content</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- bottom stat row -->
+        <div id="heroStats" class="flex flex-wrap items-end gap-x-9 gap-y-3" style="margin-top:30px;opacity:0;">
+          <div><p class="gold" style="font-size:24px;font-weight:800;letter-spacing:-0.04em;">312+</p><p style="font-size:11px;color:var(--muted);margin-top:2px;">누적 프로젝트</p></div>
+          <div class="vline hide-m" style="height:34px;"></div>
+          <div class="hide-m"><p class="gold" style="font-size:24px;font-weight:800;letter-spacing:-0.04em;">11년</p><p style="font-size:11px;color:var(--muted);margin-top:2px;">남산 현장 경험</p></div>
+          <div class="vline hide-m" style="height:34px;"></div>
+          <div><p class="gold" style="font-size:24px;font-weight:800;letter-spacing:-0.04em;">3개</p><p style="font-size:11px;color:var(--muted);margin-top:2px;">통합 사업 영역</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" id="scrollCue">
+      <span>SCROLL</span>
+      <iconify-icon icon="solar:alt-arrow-down-line-duotone" style="font-size:16px;"></iconify-icon>
+    </div>
+
+    <div class="hero-loader" id="loader">
+      <span style="font-size:11px;letter-spacing:0.3em;color:var(--muted);">NAMSAN TOWER</span>
+      <div class="loader-bar"><span id="loaderFill"></span></div>
+      <span id="loaderPct" style="font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;">0%</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TICKER ═══ -->
+<div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;overflow:hidden;background:var(--s1);position:relative;z-index:2;">
+  <div class="ticker-anim flex items-center gap-10 whitespace-nowrap" style="width:max-content;">
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">서울시 빛 축제</strong> 공식 연출 대행</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">현대자동차</strong> 신차 런칭 이벤트</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">SM엔터테인먼트</strong> 아티스트 팬미팅</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">서울관광재단</strong> 글로벌 팝업 행사</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">넷플릭스 코리아</strong> 시리즈 론칭 파티</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">LG전자</strong> 미디어아트 캠페인</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">서울시 빛 축제</strong> 공식 연출 대행</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">현대자동차</strong> 신차 런칭 이벤트</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">SM엔터테인먼트</strong> 아티스트 팬미팅</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">서울관광재단</strong> 글로벌 팝업 행사</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">넷플릭스 코리아</strong> 시리즈 론칭 파티</span><span style="color:var(--border);">—</span>
+    <span class="flex items-center gap-3" style="font-size:12px;color:var(--muted);"><iconify-icon icon="solar:star-bold" class="gold"></iconify-icon><strong style="color:var(--text);">LG전자</strong> 미디어아트 캠페인</span><span style="color:var(--border);">—</span>
+  </div>
+</div>
+
+<!-- ═══ BUSINESS 01 — NAMSAN TOWER ═══ -->
+<section id="namsan" class="py-36 px-6" style="position:relative;z-index:2;background:var(--surface);">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-4 mb-20 rv">
+      <span class="tag tag-gold">Business 01</span>
+      <span style="flex:1;height:1px;background:linear-gradient(to right, var(--border-warm), transparent);"></span>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-16 items-start">
+      <div class="lg:sticky lg:top-32 shrink-0 lg:w-80">
+        <iconify-icon icon="solar:tower-bold-duotone" class="gold" style="font-size:40px;margin-bottom:18px;display:block;"></iconify-icon>
+        <h2 class="keep" style="font-size:clamp(30px,3.8vw,48px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px;">Namsan<br/><span class="gold">Tower</span></h2>
+        <p class="keep rv d1" style="font-size:14px;color:var(--muted);line-height:1.7;">남산서울타워를 거점으로 한류를 대표하는 K-Contents 프로젝트를 기획·운영합니다. 랜드마크 공간을 글로벌 콘텐츠 플랫폼으로 확장합니다.</p>
+      </div>
+      <div class="flex-1 grid grid-cols-1 gap-5">
+        <div class="card overflow-hidden rv" style="position:relative;min-height:340px;">
+          <img src="assets/ref/mp20.webp" alt="N서울타워 미디어파사드 라이팅" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0.5;" />
+          <div style="position:absolute;inset:0;background:linear-gradient(120deg, rgba(8,8,9,0.92) 42%, rgba(8,8,9,0.15));"></div>
+          <div style="position:relative;padding:36px;">
+            <div class="glass-gold" style="display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:7px 13px;margin-bottom:18px;">
+              <iconify-icon icon="solar:monitor-smartphone-bold-duotone" class="gold" style="font-size:18px;"></iconify-icon>
+              <span style="font-size:12px;font-weight:700;" class="gold">미디어파사드 연출</span>
+            </div>
+            <h3 class="keep" style="color:#FBF9F4;font-size:clamp(20px,2.5vw,30px);font-weight:900;letter-spacing:-0.03em;margin-bottom:12px;">건물 전체가 스크린이 됩니다</h3>
+            <p class="keep" style="font-size:13px;color:rgba(237,234,226,0.72);max-width:440px;line-height:1.7;">N서울타워와 남산 일대 건물 외벽에 고출력 빔프로젝터 및 LED 매핑으로 도심 전체를 미디어아트 공간으로 전환합니다. 실시간 인터랙션, 브랜드 콘텐츠 연동 가능.</p>
+            <div class="flex flex-wrap gap-2 mt-5">
+              <span class="tag">3D 건물 매핑</span><span class="tag">실시간 인터랙션</span><span class="tag">브랜드 연동</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="card rv d1" style="padding:28px;">
+            <iconify-icon icon="solar:lamp-bold-duotone" class="gold" style="font-size:28px;margin-bottom:14px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;">타워 조명 특수 연출</h4>
+            <p class="keep" style="font-size:13px;color:var(--muted);line-height:1.65;">N서울타워 전용 조명 시스템을 활용한 기념일·캠페인·브랜드 테마 조명. 서울 야경의 중심을 점령합니다.</p>
+          </div>
+          <div class="card rv d2" style="padding:28px;">
+            <iconify-icon icon="solar:gallery-bold-duotone" class="gold" style="font-size:28px;margin-bottom:14px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;">조형물 설치</h4>
+            <p class="keep" style="font-size:13px;color:var(--muted);line-height:1.65;">대형 키네틱 조형물, 포토존, 브랜드 아이덴티티를 반영한 설치 미술 기획·제작·설치.</p>
+          </div>
+          <div class="card rv d2" style="padding:28px;">
+            <iconify-icon icon="solar:shop-bold-duotone" class="gold" style="font-size:28px;margin-bottom:14px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;">팝업스토어 운영</h4>
+            <p class="keep" style="font-size:13px;color:var(--muted);line-height:1.65;">남산 광장 및 유동인구 밀집 구역 팝업 공간 기획·운영 풀패키지. 기획부터 철수까지 원스톱.</p>
+          </div>
+          <div class="card rv d3" style="padding:28px;">
+            <iconify-icon icon="solar:music-note-bold-duotone" class="gold" style="font-size:28px;margin-bottom:14px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;">버스킹 & 문화 공연</h4>
+            <p class="keep" style="font-size:13px;color:var(--muted);line-height:1.65;">거리 버스킹, 야외 콘서트, 문화 공연 기획·섭외·무대 연출. 관객과 브랜드를 연결합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUSINESS 02 — K-POP ═══ -->
+<section id="kpop" class="py-36 px-6" style="background:var(--s1);position:relative;z-index:2;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-4 mb-20 rv">
+      <span class="tag" style="background:rgba(181,51,51,0.12);border-color:rgba(181,51,51,0.25);color:#C24A4A;">Business 02</span>
+      <span style="flex:1;height:1px;background:linear-gradient(to right, rgba(181,51,51,0.3), transparent);"></span>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-16 items-start">
+      <div class="lg:sticky lg:top-32 shrink-0 lg:w-80">
+        <iconify-icon icon="solar:music-library-2-bold-duotone" style="font-size:40px;margin-bottom:18px;display:block;color:#B53333;"></iconify-icon>
+        <h2 class="keep" style="font-size:clamp(30px,3.8vw,48px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px;">K<span style="color:#B53333;">-</span>POP</h2>
+        <p class="keep rv d1" style="font-size:14px;color:var(--muted);line-height:1.7;">K-POP 콘텐츠를 기반으로 아티스트와 브랜드를 연결하는 통합 엔터테인먼트 사업을 전개합니다.</p>
+      </div>
+      <div class="flex-1">
+        <div class="card overflow-hidden rv mb-5" style="position:relative;min-height:340px;box-shadow:0 0 60px rgba(181,51,51,0.12);">
+          <img src="assets/ref/mp3.webp" alt="남산 광장 K-POP 댄스 퍼포먼스" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0.32;filter:saturate(1.05);" />
+          <div style="position:absolute;inset:0;background:linear-gradient(120deg, rgba(8,8,9,0.94) 40%, rgba(120,30,30,0.45));"></div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 20%, rgba(181,51,51,0.22), transparent 70%);"></div>
+          <div style="position:relative;padding:36px;">
+            <div style="display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:7px 13px;margin-bottom:18px;background:rgba(181,51,51,0.14);border:1px solid rgba(181,51,51,0.28);">
+              <iconify-icon icon="solar:diploma-bold-duotone" style="font-size:18px;color:#B53333;"></iconify-icon>
+              <span style="font-size:12px;font-weight:700;color:#C24A4A;">통합 엔터테인먼트 사업</span>
+            </div>
+            <h3 class="keep" style="color:#FBF9F4;font-size:clamp(20px,2.5vw,30px);font-weight:900;letter-spacing:-0.03em;margin-bottom:12px;">아티스트와 브랜드를<br/>하나의 경험으로 연결합니다</h3>
+            <p class="keep" style="font-size:13px;color:rgba(237,234,226,0.7);max-width:440px;line-height:1.7;">프로모션 기획, 콘서트 및 팬미팅, 팬사인회 운영을 비롯해 공식 굿즈 기획·제조·유통까지. 글로벌 팬덤을 향한 K-POP 비즈니스의 전 과정을 통합 운영합니다.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="card rv d1" style="padding:26px;">
+            <iconify-icon icon="solar:ticket-sale-bold-duotone" style="font-size:26px;color:#B53333;margin-bottom:12px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:16px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">프로모션 기획</h4>
+            <p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">K-POP 콘텐츠 기반 캠페인 기획 및 글로벌 마케팅 전략 수립.</p>
+          </div>
+          <div class="card rv d2" style="padding:26px;">
+            <iconify-icon icon="solar:users-group-rounded-bold-duotone" style="font-size:26px;color:#B53333;margin-bottom:12px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:16px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">콘서트 & 팬미팅</h4>
+            <p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">콘서트·팬미팅·팬사인회 기획·제작·현장 운영 풀서비스.</p>
+          </div>
+          <div class="card rv d3" style="padding:26px;">
+            <iconify-icon icon="solar:bag-4-bold-duotone" style="font-size:26px;color:#B53333;margin-bottom:12px;display:block;"></iconify-icon>
+            <h4 class="keep" style="font-size:16px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">공식 굿즈</h4>
+            <p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">아티스트 공식 굿즈 기획·제조·유통. 온·오프라인 채널 통합 운영.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUSINESS 03 — MEDIA CONTENT ═══ -->
+<section id="media" class="py-36 px-6" style="position:relative;z-index:2;background:var(--surface);">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-4 mb-20 rv">
+      <span class="tag" style="background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.22);color:#60a5fa;">Business 03</span>
+      <span style="flex:1;height:1px;background:linear-gradient(to right, rgba(59,130,246,0.3), transparent);"></span>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-16 items-start">
+      <div class="lg:sticky lg:top-32 shrink-0 lg:w-80">
+        <iconify-icon icon="solar:videocamera-record-bold-duotone" style="font-size:40px;margin-bottom:18px;display:block;color:#3b82f6;"></iconify-icon>
+        <h2 class="keep" style="font-size:clamp(30px,3.8vw,48px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px;">Media<br/><span style="color:#3b82f6;">Content</span></h2>
+        <p class="keep rv d1" style="font-size:14px;color:var(--muted);line-height:1.7;">공간과 경험을 콘텐츠로 구현합니다. 행사와 공간의 기록을 넘어 브랜드 경험을 콘텐츠로 확장하여 지속적인 홍보 자산을 구축합니다.</p>
+      </div>
+      <div class="flex-1">
+        <div class="card overflow-hidden rv mb-5" style="position:relative;min-height:360px;box-shadow:0 0 60px rgba(59,130,246,0.1);">
+          <img src="assets/ref/mp13.webp" alt="자동차 브랜드 신차 런칭 미디어 행사" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0.4;" />
+          <div style="position:absolute;inset:0;background:linear-gradient(120deg, rgba(8,8,9,0.93) 40%, rgba(30,58,138,0.4));"></div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 88% 18%, rgba(59,130,246,0.2), transparent 70%);"></div>
+          <div style="position:relative;padding:36px;">
+            <div style="display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:7px 13px;margin-bottom:18px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.22);">
+              <iconify-icon icon="solar:camera-bold-duotone" style="font-size:18px;color:#3b82f6;"></iconify-icon>
+              <span style="font-size:12px;font-weight:700;color:#60a5fa;">공간 · 경험 · 콘텐츠</span>
+            </div>
+            <h3 class="keep" style="color:#FBF9F4;font-size:clamp(20px,2.5vw,30px);font-weight:900;letter-spacing:-0.03em;margin-bottom:12px;">공간의 가치를<br/>효과적으로 전달합니다</h3>
+            <p class="keep" style="font-size:13px;color:rgba(237,234,226,0.7);max-width:460px;line-height:1.7;">Brand Film, Event Highlight, Drone Cinematography, FPV Tour, Virtual Tour 등 다양한 미디어 포맷을 활용하여 관광지, 문화공간, 레저시설, 엔터테인먼트 공간의 가치를 전달합니다.</p>
+            <div class="flex flex-wrap gap-2 mt-5">
+              <span class="tag">Brand Film</span><span class="tag">Drone Cinema</span><span class="tag">FPV Tour</span><span class="tag">Virtual Tour</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="card rv d1" style="padding:26px;display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><iconify-icon icon="solar:clapperboard-bold-duotone" style="font-size:20px;color:#3b82f6;"></iconify-icon></div>
+            <div><h4 class="keep" style="font-size:15px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">Brand Film & Event Highlight</h4><p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">행사 현장의 핵심 순간을 감각적으로 포착하여 브랜드 자산으로 전환합니다.</p></div>
+          </div>
+          <div class="card rv d2" style="padding:26px;display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><iconify-icon icon="solar:ufo-bold-duotone" style="font-size:20px;color:#3b82f6;"></iconify-icon></div>
+            <div><h4 class="keep" style="font-size:15px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">Drone Cinematography</h4><p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">항공 촬영으로 공간의 스케일과 위상을 압도적으로 시각화합니다.</p></div>
+          </div>
+          <div class="card rv d2" style="padding:26px;display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><iconify-icon icon="solar:wind-bold-duotone" style="font-size:20px;color:#3b82f6;"></iconify-icon></div>
+            <div><h4 class="keep" style="font-size:15px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">FPV Tour</h4><p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">1인칭 시점의 FPV 드론으로 공간을 역동적으로 탐험하는 시네마틱 영상 제작.</p></div>
+          </div>
+          <div class="card rv d3" style="padding:26px;display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><iconify-icon icon="solar:earth-bold-duotone" style="font-size:20px;color:#3b82f6;"></iconify-icon></div>
+            <div><h4 class="keep" style="font-size:15px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;">Virtual Tour</h4><p class="keep" style="font-size:12px;color:var(--muted);line-height:1.65;">360° 버추얼 투어로 공간을 온라인에서 체험하게 하여 방문 전환율을 높입니다.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECT GALLERY ═══ -->
+<section id="project" class="py-36 px-6" style="background:var(--s1);position:relative;z-index:2;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-4 mb-7 rv">
+      <span class="tag tag-gold">Project</span>
+      <span style="flex:1;height:1px;background:linear-gradient(to right, var(--border-warm), transparent);"></span>
+    </div>
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+      <h2 class="keep rv" style="font-size:clamp(30px,4vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:1.1;">실제 진행한 <span class="gold">프로젝트</span></h2>
+      <p class="keep rv d1" style="font-size:14px;color:var(--muted);line-height:1.7;max-width:380px;">남산서울타워를 무대로 완성한 K-Contents·엔터테인먼트·미디어 프로젝트의 실제 현장 기록입니다.</p>
+    </div>
+
+    <div class="masonry rv">
+      <figure class="gitem">
+        <img src="assets/ref/mp7.webp" loading="lazy" alt="남산 야외 퍼포먼스 페스티벌" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(201,100,66,0.16);border:1px solid var(--border-warm);color:var(--gold-light);">행사 연출</span><p class="gitem-title">남산 야외 퍼포먼스 페스티벌</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp4.webp" loading="lazy" alt="서울가요대상 프로모션" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(181,51,51,0.18);border:1px solid rgba(181,51,51,0.3);color:#C24A4A;">K-POP</span><p class="gitem-title">서울가요대상 프로모션</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp15.webp" loading="lazy" alt="N서울타워 미디어파사드 라이팅" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(201,100,66,0.16);border:1px solid var(--border-warm);color:var(--gold-light);">타워 조명</span><p class="gitem-title">N서울타워 미디어파사드 라이팅</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp11.webp" loading="lazy" alt="글로벌 팬 페스티벌" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(181,51,51,0.18);border:1px solid rgba(181,51,51,0.3);color:#C24A4A;">팬 이벤트</span><p class="gitem-title">글로벌 팬 페스티벌</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp13.webp" loading="lazy" alt="자동차 브랜드 신차 런칭" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(59,130,246,0.16);border:1px solid rgba(59,130,246,0.28);color:#60a5fa;">브랜드</span><p class="gitem-title">자동차 브랜드 신차 런칭</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp5.webp" loading="lazy" alt="아티스트 컴백 프로모션" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(181,51,51,0.18);border:1px solid rgba(181,51,51,0.3);color:#C24A4A;">K-POP</span><p class="gitem-title">아티스트 컴백 프로모션</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp3.webp" loading="lazy" alt="K-POP 댄스 퍼포먼스 남산 광장" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(181,51,51,0.18);border:1px solid rgba(181,51,51,0.3);color:#C24A4A;">K-POP 공연</span><p class="gitem-title">K-POP 댄스 퍼포먼스 — 남산 광장</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp20.webp" loading="lazy" alt="N서울타워 블루 라이트업" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(201,100,66,0.16);border:1px solid var(--border-warm);color:var(--gold-light);">타워 조명</span><p class="gitem-title">N서울타워 블루 라이트업</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp23.webp" loading="lazy" alt="KOREA GRAND MUSIC AWARDS" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(181,51,51,0.18);border:1px solid rgba(181,51,51,0.3);color:#C24A4A;">K-POP</span><p class="gitem-title">KOREA GRAND MUSIC AWARDS</p></div>
+      </figure>
+      <figure class="gitem">
+        <img src="assets/ref/mp21.webp" loading="lazy" alt="콘서트 무대 음향 시스템 구축" />
+        <div class="gitem-ov"><span class="gitem-cat" style="background:rgba(59,130,246,0.16);border:1px solid rgba(59,130,246,0.28);color:#60a5fa;">미디어 제작</span><p class="gitem-title">콘서트 무대 · 음향 시스템 구축</p></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section style="background:var(--s1);padding:80px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:2;">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
+      <div class="rv text-center lg:text-left"><p class="stat-n">312<span style="font-size:0.45em;color:var(--muted);font-weight:600;">건</span></p><p class="keep" style="font-size:12px;color:var(--muted);margin-top:8px;">누적 이벤트 프로젝트</p></div>
+      <div class="rv d1 text-center lg:text-left"><p class="stat-n">11<span style="font-size:0.45em;color:var(--muted);font-weight:600;">년</span></p><p class="keep" style="font-size:12px;color:var(--muted);margin-top:8px;">남산 현장 운영 경험</p></div>
+      <div class="rv d2 text-center lg:text-left"><p class="stat-n">280<span style="font-size:0.45em;color:var(--muted);font-weight:600;">만</span></p><p class="keep" style="font-size:12px;color:var(--muted);margin-top:8px;">연간 관람객 동원 인원</p></div>
+      <div class="rv d3 text-center lg:text-left"><p class="stat-n">98<span style="font-size:0.45em;color:var(--muted);font-weight:600;">%</span></p><p class="keep" style="font-size:12px;color:var(--muted);margin-top:8px;">클라이언트 재의뢰율</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="py-32 px-6" style="position:relative;z-index:2;background:var(--surface);">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14 rv">
+      <span class="tag mb-5" style="display:inline-flex;">클라이언트 후기</span>
+      <h2 class="keep" style="font-size:clamp(26px,4vw,48px);font-weight:900;letter-spacing:-0.04em;">함께한 파트너들의 <span class="gold">말</span></h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div class="tcard rv">
+        <div class="flex gap-1 mb-5">
+          <iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon>
+        </div>
+        <p class="keep" style="font-size:13px;color:rgba(20,20,19,0.7);line-height:1.75;margin-bottom:24px;">"허가 문제부터 날씨 변수까지 모두 선제적으로 해결해 주셨습니다. 행사 당일 담당자로서 아무 걱정이 없었어요. 단순 연출 업체가 아닌 진짜 현장 파트너입니다."</p>
+        <div class="flex items-center gap-3">
+          <div class="avatar" style="background:linear-gradient(135deg,#D97757,#C96442);">김</div>
+          <div><p style="font-size:13px;font-weight:700;">김도현</p><p style="font-size:11px;color:var(--muted);">현대자동차 브랜드 마케팅팀 차장</p></div>
+        </div>
+      </div>
+      <div class="tcard rv d1">
+        <div class="flex gap-1 mb-5">
+          <iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon>
+        </div>
+        <p class="keep" style="font-size:13px;color:rgba(20,20,19,0.7);line-height:1.75;margin-bottom:24px;">"드론 촬영부터 버추얼 투어까지 미디어 콘텐츠 퀄리티가 압도적이었습니다. 해외 에이전시보다 훨씬 나은 결과물, 내년에도 당연히 맡길 예정입니다."</p>
+        <div class="flex items-center gap-3">
+          <div class="avatar" style="background:linear-gradient(135deg,#C24A4A,#B53333);">박</div>
+          <div><p style="font-size:13px;font-weight:700;">박서연</p><p style="font-size:11px;color:var(--muted);">서울관광재단 문화행사팀 팀장</p></div>
+        </div>
+      </div>
+      <div class="tcard rv d2">
+        <div class="flex gap-1 mb-5">
+          <iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon><iconify-icon icon="solar:star-bold" class="gold" style="font-size:13px;"></iconify-icon>
+        </div>
+        <p class="keep" style="font-size:13px;color:rgba(20,20,19,0.7);line-height:1.75;margin-bottom:24px;">"K-POP 팬미팅과 팝업을 동시에 진행했는데 두 영역 모두 기대 이상이었습니다. 남산이라는 공간을 제대로 이해하는 팀은 여기밖에 없다고 확신합니다."</p>
+        <div class="flex items-center gap-3">
+          <div class="avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);">이</div>
+          <div><p style="font-size:13px;font-weight:700;">이재원</p><p style="font-size:11px;color:var(--muted);">넷플릭스 코리아 PR 디렉터</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="contact" class="relative py-36 px-6 overflow-hidden" style="background:var(--s1);z-index:2;">
+  <div class="absolute inset-0 pointer-events-none">
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:900px;height:500px;background:radial-gradient(ellipse, rgba(201,100,66,0.09) 0%, transparent 70%);"></div>
+    <div class="grid-overlay absolute inset-0" style="mask-image:radial-gradient(ellipse 60% 80% at 50% 50%, black, transparent);"></div>
+  </div>
+  <div class="relative max-w-3xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="tag mb-7" style="display:inline-flex;">프로젝트 문의</span>
+      <h2 class="keep rv" style="font-size:clamp(30px,5vw,60px);font-weight:900;letter-spacing:-0.045em;line-height:1.1;margin-bottom:20px;">남산을 무대로 만들<br/>준비가 되셨나요?</h2>
+      <p class="keep rv d1 mx-auto" style="font-size:15px;color:var(--muted);max-width:440px;line-height:1.7;">사업 영역에 관계없이 먼저 이야기 나눠보세요. 첫 상담은 무료이며, 48시간 이내 초안 제안서를 드립니다.</p>
+      <div class="flex flex-wrap justify-center gap-4 mt-8 rv d2">
+        <a href="mailto:hello@namsantower.kr" class="pill"><span class="ic"><iconify-icon icon="solar:letter-bold" style="font-size:14px;"></iconify-icon></span>이메일로 문의</a>
+        <a href="tel:0215881234" class="pill-ghost"><iconify-icon icon="solar:phone-bold" style="font-size:16px;"></iconify-icon>02-1588-1234</a>
+      </div>
+    </div>
+    <div class="card p-8 rv d2">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+        <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:7px;letter-spacing:0.03em;">담당자 성함</label><input class="inp" type="text" placeholder="홍길동" /></div>
+        <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:7px;letter-spacing:0.03em;">회사 / 브랜드명</label><input class="inp" type="text" placeholder="(주)브랜드이름" /></div>
+        <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:7px;letter-spacing:0.03em;">연락처</label><input class="inp" type="tel" placeholder="010-0000-0000" /></div>
+        <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:7px;letter-spacing:0.03em;">관심 사업 영역</label>
+          <select class="inp" style="cursor:pointer;appearance:none;">
+            <option value="" style="background:var(--s2);">선택해주세요</option>
+            <option style="background:var(--s2);">Namsan Tower — 이벤트 연출</option>
+            <option style="background:var(--s2);">K-POP — 엔터테인먼트</option>
+            <option style="background:var(--s2);">Media Content — 영상 제작</option>
+            <option style="background:var(--s2);">복합 패키지 문의</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-5"><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:7px;letter-spacing:0.03em;">요청사항 및 행사 개요</label><textarea class="inp" rows="4" placeholder="행사 일정, 예상 규모, 예산, 주요 목표 등을 자유롭게 적어주세요." style="resize:none;"></textarea></div>
+      <button class="pill w-full justify-center" style="border-radius:14px;font-size:15px;"><span class="ic"><iconify-icon icon="solar:paper-plane-bold" style="font-size:15px;"></iconify-icon></span>상담 신청 보내기</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer style="border-top:1px solid var(--border);background:var(--surface);padding:40px 24px 32px;position:relative;z-index:2;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span style="width:28px;height:28px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;"><iconify-icon icon="solar:tower-bold" style="color:#FBF9F4;font-size:15px;"></iconify-icon></span>
+          <span style="font-weight:800;font-size:14px;letter-spacing:-0.04em;">NAMSAN<span class="gold">.</span></span>
+        </div>
+        <p class="keep" style="font-size:12px;color:var(--muted);line-height:1.7;max-width:320px;">서울특별시 용산구 남산공원길 105<br/>사업자등록번호 123-45-67890<br/>대표 이메일 hello@namsantower.kr</p>
+      </div>
+      <div class="flex flex-wrap gap-x-12 gap-y-4">
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:var(--gold);margin-bottom:10px;">NAMSAN TOWER</p>
+          <div class="flex flex-col gap-2" style="font-size:12px;color:var(--muted);"><a href="#namsan" class="hover:text-neutral-900 transition-colors">미디어파사드 연출</a><a href="#namsan" class="hover:text-neutral-900 transition-colors">타워 조명</a><a href="#namsan" class="hover:text-neutral-900 transition-colors">팝업 & 공연</a></div>
+        </div>
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:#B53333;margin-bottom:10px;">K-POP</p>
+          <div class="flex flex-col gap-2" style="font-size:12px;color:var(--muted);"><a href="#kpop" class="hover:text-neutral-900 transition-colors">프로모션 기획</a><a href="#kpop" class="hover:text-neutral-900 transition-colors">콘서트 & 팬미팅</a><a href="#kpop" class="hover:text-neutral-900 transition-colors">공식 굿즈</a></div>
+        </div>
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:#3b82f6;margin-bottom:10px;">MEDIA CONTENT</p>
+          <div class="flex flex-col gap-2" style="font-size:12px;color:var(--muted);"><a href="#media" class="hover:text-neutral-900 transition-colors">Brand Film</a><a href="#media" class="hover:text-neutral-900 transition-colors">Drone Cinematography</a><a href="#media" class="hover:text-neutral-900 transition-colors">Virtual Tour</a></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:20px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;">
+      <p style="font-size:11px;color:var(--muted);">© 2025 NAMSAN TOWER. All rights reserved.</p>
+      <p style="font-size:11px;color:var(--muted);">K-Contents Global Platform</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════ SCROLL-SCRUB HERO ENGINE ════════ */
+(function(){
+  const N = 120;                       // total frames f_001..f_120
+  const canvas = document.getElementById('seq');
+  const ctx = canvas.getContext('2d', { alpha:false });
+  const heroWrap = document.getElementById('hero');
+  const loader = document.getElementById('loader');
+  const loaderFill = document.getElementById('loaderFill');
+  const loaderPct = document.getElementById('loaderPct');
+  const heroBar = document.getElementById('heroBar');
+  const phaseA = document.getElementById('phaseA');
+  const phaseB = document.getElementById('phaseB');
+  const heroStats = document.getElementById('heroStats');
+  const scrollCue = document.getElementById('scrollCue');
+
+  const frames = new Array(N);
+  let loaded = 0, ready = false, running = false, lastIdx = -1;
+  let target = 0;        // 0..1  scroll-driven goal
+  let displayed = 0;     // 0..1  eased value actually shown
+  const LERP = 0.16;     // easing factor → buttery, weighty scrub
+
+  const path = i => 'assets/seq/f_' + String(i+1).padStart(3,'0') + '.webp';
+
+  function sizeCanvas(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width  = Math.round(window.innerWidth  * dpr);
+    canvas.height = Math.round(window.innerHeight * dpr);
+    canvas.style.width  = window.innerWidth  + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    lastIdx = -1; // force a redraw at current frame
+  }
+
+  function pickImg(idx){
+    let img = frames[idx];
+    if (img && img.complete && img.naturalWidth) return img;
+    for (let d=1; d<N; d++){            // nearest already-decoded frame
+      const a = frames[idx-d]; if (a && a.complete && a.naturalWidth) return a;
+      const b = frames[idx+d]; if (b && b.complete && b.naturalWidth) return b;
+    }
+    return null;
+  }
+
+  function drawIndex(idx){
+    const img = pickImg(idx);
+    if (!img) return;
+    const cw = canvas.width, ch = canvas.height;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const scale = Math.max(cw/iw, ch/ih);
+    const dw = iw*scale, dh = ih*scale;
+    ctx.drawImage(img, (cw-dw)/2, (ch-dh)/2, dw, dh);
+  }
+
+  const ss = (e0,e1,x) => { const t = Math.min(1, Math.max(0,(x-e0)/(e1-e0))); return t*t*(3-2*t); };
+
+  function overlay(p){
+    const aOut = ss(0.30, 0.50, p);            // phase A out
+    phaseA.style.opacity = (1 - aOut).toFixed(3);
+    phaseA.style.transform = 'translateY(' + (-46*aOut).toFixed(1) + 'px)';
+    phaseA.style.pointerEvents = aOut > 0.6 ? 'none' : 'auto';
+
+    const bIn = ss(0.52, 0.72, p);             // phase B in
+    phaseB.style.opacity = bIn.toFixed(3);
+    phaseB.style.transform = 'translateY(' + (24*(1-bIn)).toFixed(1) + 'px)';
+    phaseB.style.pointerEvents = bIn > 0.4 ? 'auto' : 'none';
+
+    heroStats.style.opacity = ss(0.66, 0.84, p).toFixed(3);
+    scrollCue.style.opacity = (1 - ss(0.0, 0.06, p)).toFixed(3);
+    heroBar.style.height = (p*100).toFixed(1) + '%';
+  }
+
+  function paint(){
+    const idx = Math.max(0, Math.min(N-1, Math.round(displayed*(N-1))));
+    if (idx !== lastIdx){ drawIndex(idx); lastIdx = idx; }
+    overlay(displayed);
+  }
+
+  function computeProgress(){
+    const total = heroWrap.offsetHeight - window.innerHeight;
+    const scrolled = Math.min(Math.max(-heroWrap.getBoundingClientRect().top, 0), total);
+    return total > 0 ? scrolled/total : 0;
+  }
+
+  function loop(){
+    displayed += (target - displayed) * LERP;
+    if (Math.abs(target - displayed) < 0.0006){ displayed = target; running = false; }
+    paint();
+    if (running) requestAnimationFrame(loop);
+  }
+
+  function onScroll(){
+    target = computeProgress();
+    if (ready && !running){ running = true; requestAnimationFrame(loop); }
+  }
+
+  function preload(){
+    for (let i=0;i<N;i++){
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = img.onerror = function(){
+        loaded++;
+        const pct = Math.round(loaded/N*100);
+        loaderFill.style.width = pct + '%';
+        loaderPct.textContent = pct + '%';
+        if (i === 0){ ready = true; sizeCanvas(); target = computeProgress(); displayed = target; lastIdx = -1; paint(); }
+        if (loaded === N){ setTimeout(()=>loader.classList.add('hidden'), 250); }
+      };
+      img.src = path(i);
+      frames[i] = img;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', () => { sizeCanvas(); paint(); }, { passive:true });
+
+  sizeCanvas();
+  preload();
+})();
+
+/* ════════ SCROLL REVEAL ════════ */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
